@@ -1,0 +1,36 @@
+{
+  "name": "luminacad-studio-pro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "agent": "bun run src/agent/entry.ts",
+    "agent:manifest": "bun run scripts/agent-manifest.ts"
+  },
+  "dependencies": {
+    "@effect/platform-browser": "4.0.0",
+    "effect": "4.0.0",
+    "foldkit": "0.168.0",
+    "foldkit-agent": "0.8.1",
+    "foldkit-agent-mcp": "0.7.0",
+    "three": "0.184.0"
+  },
+  "devDependencies": {
+    "@foldkit/devtools": "0.168.0",
+    "@foldkit/devtools-mcp": "0.24.1",
+    "@foldkit/vite-plugin": "0.27.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/three": "0.184.0",
+    "happy-dom": "^20.14.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "6.0.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}

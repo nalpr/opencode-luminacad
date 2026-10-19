@@ -1,0 +1,550 @@
+{
+  "capabilities": [
+    {
+      "name": "select_step",
+      "tag": "SelectedStep",
+      "description": "Move the construction pipeline to a step between 1 (param) and 8 (manifold STL export).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "step"
+        ],
+        "additionalProperties": true
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "step_next",
+      "tag": "SteppedNext",
+      "description": "Advance the construction pipeline by one step.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "step_previous",
+      "tag": "SteppedPrev",
+      "description": "Rewind the construction pipeline by one step.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "update_param",
+      "tag": "UpdatedParam",
+      "description": "Set one parametric design value, such as height, wall thickness, radial frequency, or twist angle.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "Infinity",
+                      "-Infinity",
+                      "NaN"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "additionalProperties": true
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "apply_preset",
+      "tag": "AppliedPreset",
+      "description": "Load a curated design template by its id, such as nordic_fluted or cyberpunk_hex.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "presetId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "presetId"
+        ],
+        "additionalProperties": true
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "randomize_design",
+      "tag": "RandomizedDesign",
+      "description": "Generate a randomized but valid lamp shade design across profile, pattern, and proportions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "toggle_bulb",
+      "tag": "ToggledBulb",
+      "description": "Toggle the internal bulb lighting in the 3D viewport.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "toggle_cutaway",
+      "tag": "ToggledCutaway",
+      "description": "Toggle the cross-section cutaway in the 3D viewport.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "toggle_wireframe",
+      "tag": "ToggledWireframe",
+      "description": "Toggle the wireframe overlay in the 3D viewport.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "toggle_cad_helpers",
+      "tag": "ToggledDatumHelpers",
+      "description": "Toggle the CAD sketch and datum overlays (profile curve, revolution axis, helix guide).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "export_stl",
+      "tag": "RequestedStlExport",
+      "description": "Export the current design as a watertight binary STL in millimeters.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "export_step",
+      "tag": "RequestedStepExport",
+      "description": "Export the current design as a STEP script.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "switch_tab",
+      "tag": "SwitchedTab",
+      "description": "Switch the inspector panel between params, nodes, section, code, tea, and stylex.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tab": {
+            "type": "string",
+            "enum": [
+              "params",
+              "nodes",
+              "section",
+              "code",
+              "tea",
+              "stylex"
+            ]
+          }
+        },
+        "required": [
+          "tab"
+        ],
+        "additionalProperties": true
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    },
+    {
+      "name": "apply_theme",
+      "tag": "AppliedTheme",
+      "description": "Apply one of the atomic CSS themes to the studio.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "Solar Amber",
+              "CAD Cyan",
+              "Laser Rose",
+              "Phosphor Green"
+            ]
+          },
+          "accentHex": {
+            "type": "string"
+          },
+          "filamentHex": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "accentHex",
+          "filamentHex"
+        ],
+        "additionalProperties": true
+      },
+      "modelDependent": false,
+      "requiresAuthorization": false
+    }
+  ],
+  "resources": [
+    {
+      "name": "design",
+      "description": "The current LuminaCAD lamp shade design: profile, surface pattern, and socket fitter parameters.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "profileType": {
+            "type": "string"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "bottomRadius": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "topRadius": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "wallThickness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "curvature": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "waistPos": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "patternType": {
+            "type": "string"
+          },
+          "radialFreq": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "verticalFreq": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "patternDepth": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "twistAngle": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "sharpness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "rimBorder": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "innerWallMode": {
+            "type": "string"
+          },
+          "fitterType": {
+            "type": "string"
+          },
+          "socketDiameter": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "spokeCount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "activeStep": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Infinity",
+                  "-Infinity",
+                  "NaN"
+                ]
+              }
+            ]
+          },
+          "presetName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "profileType",
+          "height",
+          "bottomRadius",
+          "topRadius",
+          "wallThickness",
+          "curvature",
+          "waistPos",
+          "patternType",
+          "radialFreq",
+          "verticalFreq",
+          "patternDepth",
+          "twistAngle",
+          "sharpness",
+          "rimBorder",
+          "innerWallMode",
+          "fitterType",
+          "socketDiameter",
+          "spokeCount",
+          "activeStep",
+          "presetName"
+        ],
+        "additionalProperties": true
+      }
+    }
+  ]
+}
