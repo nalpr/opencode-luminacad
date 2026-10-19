@@ -59,6 +59,26 @@ These are not style preferences. The framework's guarantees depend on them.
 - Never a `for` loop. Use `Array.map`, `Array.filterMap`, `Array.makeBy`,
   `Array.reduce`.
 
+## Styling
+
+Styling is StyleX, not utility CSS. The compiler extracts atomic classes at
+build time through `@stylexjs/unplugin`.
+
+- Design tokens live in `src/style/tokens.stylex.ts`. The `.stylex.ts`
+  extension is required: the compiler hashes the file path to generate the
+  variable names.
+- Component rules live in `src/style/styles.ts`.
+- Reference them through the `className` bridge, never as raw class strings:
+
+  ```ts
+  h.Class(className(styles.button, isActive && styles.buttonActive))
+  ```
+
+  `className` merges the sets and lets the last one that defines a property
+  win, so a conditional override reads as a boolean in the list.
+- `src/styles.css` holds only what is not a component style: the reset, the
+  range input, and the scrollbars.
+
 ## Adding a parameter
 
 1. Add the field to `DesignParams` and to `Model` in `src/state.ts`.

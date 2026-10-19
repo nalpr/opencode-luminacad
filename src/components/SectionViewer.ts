@@ -3,6 +3,8 @@ import type { HtmlBuilder } from 'foldkit/html'
 import type { Message } from '../foldkit/messages'
 import type { DesignParams } from '../state'
 import { profileRadius } from '../cad/kernel'
+import { className } from '../style/className'
+import { styles } from '../style/styles'
 
 const VIEW_WIDTH = 520
 const VIEW_HEIGHT = 460
@@ -19,7 +21,8 @@ const project = (
   z: number,
 ): Projected => {
   const scale = Math.min(
-    (VIEW_WIDTH - MARGIN * 2) / (2 * Math.max(1, design.bottomRadius + design.topRadius)),
+    (VIEW_WIDTH - MARGIN * 2) /
+      (2 * Math.max(1, design.bottomRadius + design.topRadius)),
     (VIEW_HEIGHT - MARGIN * 2) / Math.max(1, design.height),
   )
   return {
@@ -30,7 +33,10 @@ const project = (
 
 const pathFrom = (points: ReadonlyArray<Projected>): string =>
   points
-    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+    .map(
+      (point, index) =>
+        `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`,
+    )
     .join(' ')
 
 export const sectionViewerView = (
@@ -63,168 +69,181 @@ export const sectionViewerView = (
   const wallLabel = `${design.wallThickness.toFixed(1)}mm`
 
   return h.div(
-    [h.Class('p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2')],
+    [h.Class(className(styles.panel))],
     [
-      h.div([h.Class('text-xs font-bold text-cyan-300 font-mono')], [
-        'XZ orthographic section',
-      ]),
-      h.svg(
+      h.div(
+        [h.Class(className(styles.section))],
         [
-          h.Width(String(VIEW_WIDTH)),
-          h.Height(String(VIEW_HEIGHT)),
-          h.ViewBox(`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`),
-          h.Class('w-full rounded-lg bg-slate-950 border border-slate-800'),
-        ],
-        [
-          h.rect(
+          h.div([h.Class(className(styles.sectionTitle, styles.sectionTitleCyan))], [
+            h.span([h.Class(className(styles.sectionDot))], []),
+            'XZ orthographic section',
+          ]),
+          h.svg(
             [
-              h.X('0'),
-              h.Y('0'),
               h.Width(String(VIEW_WIDTH)),
               h.Height(String(VIEW_HEIGHT)),
-              h.Fill('#05080c'),
+              h.ViewBox(`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`),
             ],
-            [],
-          ),
-          h.path(
             [
-              h.D(`${pathFrom(outerPoints)} L ${baseCenter.x} ${baseCenter.y} Z`),
-              h.Fill('rgba(34,211,238,0.10)'),
-              h.Stroke('#22d3ee'),
-              h.StrokeWidth('1.5'),
+              h.rect(
+                [
+                  h.X('0'),
+                  h.Y('0'),
+                  h.Width(String(VIEW_WIDTH)),
+                  h.Height(String(VIEW_HEIGHT)),
+                  h.Fill('#05080c'),
+                ],
+                [],
+              ),
+              h.path(
+                [
+                  h.D(`${pathFrom(outerPoints)} L ${baseCenter.x} ${baseCenter.y} Z`),
+                  h.Fill('rgba(34,211,238,0.10)'),
+                  h.Stroke('#22d3ee'),
+                  h.StrokeWidth('1.5'),
+                ],
+                [],
+              ),
+              h.path(
+                [
+                  h.D(pathFrom(innerPoints)),
+                  h.Fill('none'),
+                  h.Stroke('#10b981'),
+                  h.StrokeWidth('1.5'),
+                ],
+                [],
+              ),
+              h.path(
+                [
+                  h.D(pathFrom(mirroredOuter)),
+                  h.Fill('none'),
+                  h.Stroke('#22d3ee'),
+                  h.StrokeWidth('1'),
+                  h.Opacity('0.45'),
+                ],
+                [],
+              ),
+              h.path(
+                [
+                  h.D(
+                    `M ${baseCenter.x} ${baseCenter.y} L ${topCenter.x} ${topCenter.y}`,
+                  ),
+                  h.Stroke('#f43f5e'),
+                  h.StrokeWidth('1'),
+                  h.StrokeDasharray('6 4'),
+                ],
+                [],
+              ),
+              h.line(
+                [
+                  h.X1(String(baseCenter.x - 14)),
+                  h.Y1(String(baseCenter.y)),
+                  h.X2(String(baseCenter.x + 14)),
+                  h.Y2(String(baseCenter.y)),
+                  h.Stroke('#f43f5e'),
+                  h.StrokeWidth('1'),
+                ],
+                [],
+              ),
+              h.line(
+                [
+                  h.X1(String(baseCenter.x - 14)),
+                  h.Y1(String(topCenter.y)),
+                  h.X2(String(baseCenter.x + 14)),
+                  h.Y2(String(topCenter.y)),
+                  h.Stroke('#f43f5e'),
+                  h.StrokeWidth('1'),
+                ],
+                [],
+              ),
+              h.line(
+                [
+                  h.X1(String(widthPoint.x)),
+                  h.Y1(String(widthPoint.y + 18)),
+                  h.X2(String(VIEW_WIDTH - widthPoint.x)),
+                  h.Y2(String(widthPoint.y + 18)),
+                  h.Stroke('#64748b'),
+                  h.StrokeWidth('1'),
+                ],
+                [],
+              ),
+              h.text(
+                [
+                  h.X(String(VIEW_WIDTH / 2 - 26)),
+                  h.Y(String(widthPoint.y + 34)),
+                  h.Fill('#94a3b8'),
+                  h.FontSize('11'),
+                ],
+                [`Ø${Math.round(design.bottomRadius * 2)}`],
+              ),
+              h.line(
+                [
+                  h.X1(String(heightPoint.x + 26)),
+                  h.Y1(String(topCenter.y)),
+                  h.X2(String(heightPoint.x + 26)),
+                  h.Y2(String(baseCenter.y)),
+                  h.Stroke('#64748b'),
+                  h.StrokeWidth('1'),
+                ],
+                [],
+              ),
+              h.text(
+                [
+                  h.X(String(heightPoint.x + 32)),
+                  h.Y(String((topCenter.y + baseCenter.y) / 2)),
+                  h.Fill('#94a3b8'),
+                  h.FontSize('11'),
+                ],
+                [`H ${design.height}`],
+              ),
+              h.text(
+                [
+                  h.X(String(outerPoints[0].x + 6)),
+                  h.Y(String(outerPoints[0].y + 34)),
+                  h.Fill('#10b981'),
+                  h.FontSize('10'),
+                ],
+                [wallLabel],
+              ),
+              h.text(
+                [
+                  h.X('12'),
+                  h.Y('20'),
+                  h.Fill('#64748b'),
+                  h.FontSize('10'),
+                  h.FontFamily('monospace'),
+                ],
+                [`profile ${design.profileType} · pattern ${design.patternType}`],
+              ),
             ],
-            [],
           ),
-          h.path(
+          h.div(
+            [h.Class(className(styles.hudPillars))],
             [
-              h.D(pathFrom(innerPoints)),
-              h.Fill('none'),
-              h.Stroke('#10b981'),
-              h.StrokeWidth('1.5'),
+              h.div([h.Class(className(styles.hudPillar))], [
+                h.span([h.Class(className(styles.hudPillarLabel))], ['wall']),
+                h.span([h.Class(className(styles.hudPillarValue))], [wallLabel]),
+              ]),
+              h.div([h.Class(className(styles.hudPillar))], [
+                h.span([h.Class(className(styles.hudPillarLabel))], ['height']),
+                h.span([h.Class(className(styles.hudPillarValue))], [
+                  `${design.height} mm`,
+                ]),
+              ]),
+              h.div([h.Class(className(styles.hudPillar))], [
+                h.span([h.Class(className(styles.hudPillarLabel))], ['bottom Ø']),
+                h.span([h.Class(className(styles.hudPillarValue))], [
+                  `${Math.round(design.bottomRadius * 2)} mm`,
+                ]),
+              ]),
+              h.div([h.Class(className(styles.hudPillar))], [
+                h.span([h.Class(className(styles.hudPillarLabel))], ['top Ø']),
+                h.span([h.Class(className(styles.hudPillarValue))], [
+                  `${Math.round(design.topRadius * 2)} mm`,
+                ]),
+              ]),
             ],
-            [],
           ),
-          h.path(
-            [
-              h.D(pathFrom(mirroredOuter)),
-              h.Fill('none'),
-              h.Stroke('#22d3ee'),
-              h.StrokeWidth('1'),
-              h.Opacity('0.45'),
-            ],
-            [],
-          ),
-          h.path(
-            [
-              h.D(`M ${baseCenter.x} ${baseCenter.y} L ${topCenter.x} ${topCenter.y}`),
-              h.Stroke('#f43f5e'),
-              h.StrokeWidth('1'),
-              h.StrokeDasharray('6 4'),
-            ],
-            [],
-          ),
-          h.line(
-            [
-              h.X1(String(baseCenter.x - 14)),
-              h.Y1(String(baseCenter.y)),
-              h.X2(String(baseCenter.x + 14)),
-              h.Y2(String(baseCenter.y)),
-              h.Stroke('#f43f5e'),
-              h.StrokeWidth('1'),
-            ],
-            [],
-          ),
-          h.line(
-            [
-              h.X1(String(baseCenter.x - 14)),
-              h.Y1(String(topCenter.y)),
-              h.X2(String(baseCenter.x + 14)),
-              h.Y2(String(topCenter.y)),
-              h.Stroke('#f43f5e'),
-              h.StrokeWidth('1'),
-            ],
-            [],
-          ),
-          h.line(
-            [
-              h.X1(String(widthPoint.x)),
-              h.Y1(String(widthPoint.y + 18)),
-              h.X2(String(VIEW_WIDTH - widthPoint.x)),
-              h.Y2(String(widthPoint.y + 18)),
-              h.Stroke('#64748b'),
-              h.StrokeWidth('1'),
-            ],
-            [],
-          ),
-          h.text(
-            [
-              h.X(String(VIEW_WIDTH / 2 - 26)),
-              h.Y(String(widthPoint.y + 34)),
-              h.Fill('#94a3b8'),
-              h.FontSize('11'),
-            ],
-            [`Ø${Math.round(design.bottomRadius * 2)}`],
-          ),
-          h.line(
-            [
-              h.X1(String(heightPoint.x + 26)),
-              h.Y1(String(topCenter.y)),
-              h.X2(String(heightPoint.x + 26)),
-              h.Y2(String(baseCenter.y)),
-              h.Stroke('#64748b'),
-              h.StrokeWidth('1'),
-            ],
-            [],
-          ),
-          h.text(
-            [
-              h.X(String(heightPoint.x + 32)),
-              h.Y(String((topCenter.y + baseCenter.y) / 2)),
-              h.Fill('#94a3b8'),
-              h.FontSize('11'),
-            ],
-            [`H ${design.height}`],
-          ),
-          h.text(
-            [
-              h.X(String(outerPoints[0].x + 6)),
-              h.Y(String(outerPoints[0].y + 34)),
-              h.Fill('#10b981'),
-              h.FontSize('10'),
-            ],
-            [wallLabel],
-          ),
-          h.text(
-            [
-              h.X('12'),
-              h.Y('20'),
-              h.Fill('#64748b'),
-              h.FontSize('10'),
-              h.FontFamily('monospace'),
-            ],
-            [`profile ${design.profileType} · pattern ${design.patternType}`],
-          ),
-        ],
-      ),
-      h.div(
-        [h.Class('grid grid-cols-2 gap-1.5 text-[10px] font-mono')],
-        [
-          h.div([h.Class('rounded bg-slate-950 border border-slate-800 p-2')], [
-            h.div([h.Class('text-slate-500')], ['wall']),
-            h.div([h.Class('text-emerald-300')], [wallLabel]),
-          ]),
-          h.div([h.Class('rounded bg-slate-950 border border-slate-800 p-2')], [
-            h.div([h.Class('text-slate-500')], ['height']),
-            h.div([h.Class('text-cyan-300')], [`${design.height} mm`]),
-          ]),
-          h.div([h.Class('rounded bg-slate-950 border border-slate-800 p-2')], [
-            h.div([h.Class('text-slate-500')], ['bottom Ø']),
-            h.div([h.Class('text-cyan-300')], [`${Math.round(design.bottomRadius * 2)} mm`]),
-          ]),
-          h.div([h.Class('rounded bg-slate-950 border border-slate-800 p-2')], [
-            h.div([h.Class('text-slate-500')], ['top Ø']),
-            h.div([h.Class('text-cyan-300')], [`${Math.round(design.topRadius * 2)} mm`]),
-          ]),
         ],
       ),
     ],

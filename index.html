@@ -7,6 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- StyleX injects its compiled atomic CSS in development. The production
+         build folds the same rules into the emitted stylesheet, so the dev
+         endpoints are only referenced when they exist. -->
+    <script type="module">
+      if (import.meta.env.DEV) {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = '/virtual:stylex.css'
+        document.head.appendChild(link)
+        import('/@id/virtual:stylex:runtime')
+      }
+    </script>
 </head>
 <body>
     <div id="root"></div>

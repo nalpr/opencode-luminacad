@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
+import stylex from '@stylexjs/unplugin'
 import { foldkit } from '@foldkit/vite-plugin'
 
 export default defineConfig({
   base: '/opencode-luminacad/',
   plugins: [
-    tailwindcss(),
+    stylex.vite({
+      unstable_moduleResolution: {
+        type: 'commonJS',
+        rootDir: process.cwd(),
+      },
+    }),
     foldkit({
       // Windows cannot verify ownership of the relay registry directory, so
       // discovery is unavailable there. A fixed port plus the matching

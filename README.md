@@ -17,6 +17,7 @@ function, so the UI, the tests, and the AI agent all drive the same transitions.
 | Runtime | Foldkit `0.168.0` (Elm architecture on Effect) |
 | Effects | Effect `4.0.0` |
 | 3D | Three.js `0.184.0` |
+| Styling | StyleX `0.19.1` (atomic CSS via `@stylexjs/unplugin`) |
 | Build | Vite `8` + `@foldkit/vite-plugin` |
 | Tests | Vitest (`foldkit/story` + `foldkit/scene`) |
 | Agents | `@foldkit/devtools-mcp`, `foldkit-agent`, `foldkit-agent-mcp` |
@@ -56,6 +57,10 @@ src/
     NodeBuilder.ts       the SVG node graph and constraint cards
     SectionViewer.ts     the XZ orthographic section drawing
     PresetLibrary.ts     the curated templates
+  style/
+    tokens.stylex.ts     the design tokens, compiled to CSS custom properties
+    styles.ts            the component styles, compiled to atomic classes
+    className.ts         the StyleX-to-Foldkit class attribute bridge
   agent/
     contract.ts          the agent contract, projected from the Message union
     host.ts              the binding to a live runtime
@@ -79,6 +84,26 @@ Side effects are Commands, never calls from the view:
 
 `SyncViewport` is only emitted when the viewport slice actually changed, so a
 tab switch does not rebuild the mesh.
+
+### Styling
+
+StyleX compiles the design tokens and component styles into atomic CSS
+classes. `src/style/tokens.stylex.ts` holds the tokens, `src/style/styles.ts`
+holds the rules, and `src/style/className.ts` bridges them to Foldkit's HTML
+builder:
+
+```ts
+h.Class(className(styles.button, isActive && styles.buttonActive))
+```
+
+`className` merges the sets and resolves the last one that defines a property.
+`src/styles.css` holds only what is not a component style: the reset, the
+range input, and the scrollbars.
+
+The compiler runs through `@stylexjs/unplugin`, so the atomic CSS is extracted
+at build time rather than injected at runtime. `defineVars` needs a
+`.stylex.ts` file extension, because the compiler hashes the file path to
+generate the variable names.
 
 ### The 8-stage construction pipeline
 

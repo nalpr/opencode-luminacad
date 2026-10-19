@@ -1,12 +1,8 @@
-@import 'tailwindcss';
-
-@theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --color-slate-850: #131b26;
-  --color-slate-925: #0a0f16;
-  --color-slate-950: #05080c;
-}
+/**
+ * The base layer. Everything else is StyleX: `@stylexjs/stylex` compiles the
+ * component styles into atomic classes and this file holds only what is not
+ * a component style.
+ */
 
 :root {
   --sx-accent: #f59e0b;
@@ -17,14 +13,21 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
   overflow: hidden;
   background-color: #05080c;
   color: #f1f5f9;
   font-family: 'Inter', sans-serif;
-  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
 }
 
 input[type='range'] {
@@ -50,6 +53,25 @@ input[type='range']::-webkit-slider-thumb {
   cursor: pointer;
 }
 
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+select,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: rgba(245, 158, 11, 0.3);
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -62,19 +84,4 @@ input[type='range']::-webkit-slider-thumb {
 ::-webkit-scrollbar-thumb {
   background: #283548;
   border-radius: 3px;
-}
-
-.glass-hud {
-  background: rgba(10, 15, 23, 0.84);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.step-pill {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.code-line {
-  transition: background-color 0.15s ease, border-color 0.15s ease;
 }

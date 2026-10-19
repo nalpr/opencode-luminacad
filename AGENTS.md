@@ -48,6 +48,11 @@ fitter.
   The `SyncViewport` Command pushes Model state into the live scene.
 - `src/components/NodeBuilder.ts` — the SVG node graph and constraint cards.
 - `src/components/SectionViewer.ts` — the XZ orthographic section drawing.
+- `src/style/tokens.stylex.ts` — the design tokens. The file extension is
+  required: the StyleX compiler hashes the file path to name the variables.
+- `src/style/styles.ts` — the component styles.
+- `src/style/className.ts` — the bridge from StyleX style sets to Foldkit's
+  `h.Class`.
 
 ### Agent surface
 
@@ -65,3 +70,7 @@ Run `bun run agent` to serve the contract over MCP on stdio.
   from the view. Do not call `Viewport3D` from `view.ts`.
 - The Model is a Schema. `modifyFields` from `foldkit/struct` is the only
   sanctioned way to change it. Do not spread or `Object.assign`.
+- Styling is StyleX, not utility CSS. Add a rule to `src/style/styles.ts` and
+  reference it through `className(...)`. Do not write raw class strings.
+- `defineVars` lives in a `.stylex.ts` file. The compiler hashes the file path,
+  so the extension is required.
