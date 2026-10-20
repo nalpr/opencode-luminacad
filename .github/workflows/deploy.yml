@@ -36,13 +36,19 @@ jobs:
           bun-version: latest
       - run: bun install --frozen-lockfile
       - run: bun run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      # GitHub Pages needs a public repository on the free plan. The guard
+      # keeps CI green for a private repo while publishing automatically if
+      # the repository is made public later.
+      - if: github.event.repository.visibility == 'public'
+        uses: actions/configure-pages@v5
+      - if: github.event.repository.visibility == 'public'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
+    if: github.event.repository.visibility == 'public'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

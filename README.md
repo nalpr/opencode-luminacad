@@ -191,8 +191,11 @@ The Node Graph panel renders the findings.
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every
-push to `main`. The Vite `base` is `/opencode-luminacad/`, matching the
+`.github/workflows/deploy.yml` runs typecheck, tests, and the production build
+on every push to `main`, then publishes to GitHub Pages. Pages is only
+attempted for public repositories, because GitHub does not serve Pages from a
+private repository on the free plan; making the repository public enables the
+deploy automatically. The Vite `base` is `/opencode-luminacad/`, matching the
 repository name — change it in `vite.config.ts` if you rename the repo.
 
 ## License
