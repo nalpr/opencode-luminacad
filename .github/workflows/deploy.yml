@@ -41,6 +41,10 @@ jobs:
       # the repository is made public later.
       - if: github.event.repository.visibility == 'public'
         uses: actions/configure-pages@v6
+        with:
+          # Create the Pages site on the first run; without this a fresh
+          # repository fails with "Get Pages site failed".
+          enablement: true
       - if: github.event.repository.visibility == 'public'
         uses: actions/upload-pages-artifact@v5
         with:
